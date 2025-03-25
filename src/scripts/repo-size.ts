@@ -1,17 +1,8 @@
-enum Unit {
-	'B',
-	'KB',
-	'MB',
-	'GB'
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
 	const url = location.href;
 	const BASE_URL = 'https://api.github.com/repos'
 	const repo = url.replace('https://github.com', '')
-	// const token = await browser.storage.local.get('token')
 	const token = await fetch(browser.runtime.getURL('tk.txt')).then(async r => await r.text());
-
 
 	const headers = {
 		Authorization: `token ${token}`,
