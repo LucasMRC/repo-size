@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
 	const url = location.href;
 	const BASE_URL = 'https://api.github.com/repos'
-	const repo = url.replace('https://github.com', '')
+	const repo = url.replace('https://github.com/', '')
+	const [org, project,] = repo.split('/')
+
 	const token = await fetch(browser.runtime.getURL('tk.txt')).then(async r => await r.text());
 
 	const headers = {
@@ -9,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0'
 	}
 
-	const req = new Request(`${BASE_URL}${repo}`, { headers: new Headers(headers) })
+	const req = new Request(`${BASE_URL}/${org}/${project}`, { headers: new Headers(headers) })
 	const res = await fetch(req).then(async r => await r.json())
 
 	const parsed_size = parseSize(res.size)
@@ -22,11 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			display: 'flex',
 			alignItems: 'center',
 		});
-		new_section.innerHTML = `
-<img src="${browser.runtime.getURL('package.png')}" width="24"/>
-&nbsp;
-<span id="repo-size-result">${parsed_size}<span>
-`;
+		new_section.innerHTML = `<img src="${browser.runtime.getURL('package.png')}" width="24"/>&nbsp;<span id="repo-size-result">${parsed_size}<span>`;
 		repo_title_section.appendChild(new_section)
 	}
 })
