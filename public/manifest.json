@@ -1,0 +1,48 @@
+{
+	"name": "Repo SIZE",
+	"version": "0.1.0",
+	"description": "Display repo size on Github",
+	"manifest_version": 3,
+	"icons": {
+		"16": "package.png",
+		"48": "package.png",
+		"128": "package.png"
+	},
+	"author": "Lucas Reyna Córdoba",
+	"action": {
+		"default_title": "Repo SIZE",
+		"default_icon": "package.png"
+	},
+	"permissions": [
+		"storage",
+		"tabs",
+		"activeTab",
+		"webNavigation"
+	],
+	"host_permissions": [
+		"*://github.com/*"
+	],
+	"background": {
+		"scripts": ["background.js"],
+		"type": "module"
+	},
+	"content_scripts": [
+		{
+			"matches": ["*://*.github.com/*"],
+			"js": ["repo-size.js"],
+			"run_at": "document_start"
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["tk.txt"],
+			"matches": ["*://*.github.com/*"],
+			"use_dynamic_url": true
+		},
+		{
+			"resources": ["package.png"],
+			"matches": ["*://*.github.com/*"],
+			"use_dynamic_url": true
+		}
+	]
+}
