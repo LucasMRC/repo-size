@@ -16,16 +16,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	const parsed_size = parseSize(res.size)
 
-	const repo_title_section = document.querySelector('div#repo-title-component') as HTMLDivElement;
-	if (repo_title_section) {
-		const new_section = document.createElement('section', {})
-		Object.assign(new_section.style, {
-			marginLeft: '1rem',
+	const repo_details_section = document.querySelector('div#repository-details-container>ul') as HTMLDivElement;
+	if (repo_details_section) {
+		const new_item = document.createElement('li', {})
+		Object.assign(new_item.style, {
+			height: '1.75rem',
+			marginRight: '1rem',
 			display: 'flex',
 			alignItems: 'center',
+			filter: 'grayscale(1)'
 		});
-		new_section.innerHTML = `<img src="${browser.runtime.getURL('package.png')}" width="24"/>&nbsp;<span id="repo-size-result">${parsed_size}<span>`;
-		repo_title_section.appendChild(new_section)
+		new_item.innerHTML = `<img src="${browser.runtime.getURL('package.png')}" width="20"/>&nbsp;<span id="repo-size-result">${parsed_size}<span>`;
+		repo_details_section.prepend(new_item)
 	}
 })
 
@@ -34,17 +36,18 @@ function parseSize(bytes: number) {
 	const thresh = 1024;
 
 	if (Math.abs(bytes) < thresh) {
-		return bytes + ' B';
+		return `${bytes} B`;
 	}
 
 	const units = ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 	let u = -1;
 	const r = 10;
 
+	let b = bytes;
 	do {
-		bytes /= thresh;
+		b /= thresh;
 		++u;
-	} while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
+	} while (Math.round(Math.abs(b) * r) / r >= thresh && u < units.length - 1);
 
-	return bytes.toFixed(1) + ' ' + units[u];
+	return `${b.toFixed(1)} ${units[u]}`;
 }
