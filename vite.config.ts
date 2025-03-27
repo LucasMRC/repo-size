@@ -10,7 +10,6 @@ export default defineConfig({
 				'src/main.ts',
 				'src/scripts/background.ts',
 				'src/scripts/repo-size.ts',
-				'src/scripts/tk.txt',
 				'./index.html',
 			],
 			output: {
